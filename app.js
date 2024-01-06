@@ -5,6 +5,7 @@ const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
+const MongoStore = require('connect-mongo')(session);
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 //Google OAuth2.0
@@ -26,8 +27,11 @@ app.use(bodyParser.urlencoded({
 app.use(session({
     secret: "Our little secret.",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: new MongoStore(options)
 }))
+
+
 
 app.use(passport.initialize());
 app.use(passport.session());
